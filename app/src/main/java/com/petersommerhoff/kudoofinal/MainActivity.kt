@@ -13,8 +13,8 @@ import com.petersommerhoff.kudoofinal.view.add.AddTodoActivity
 import com.petersommerhoff.kudoofinal.view.common.getViewModel
 import com.petersommerhoff.kudoofinal.view.main.RecyclerListAdapter
 import com.petersommerhoff.kudoofinal.viewmodel.TodoViewModel
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
+//import kotlinx.android.synthetic.main.activity_main.*
+//import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
-    setSupportActionBar(toolbar)
+    setSupportActionBar(R.id.toolbar)
     viewModel = getViewModel(TodoViewModel::class)  // getViewModel is impl. next
     setUpRecyclerView()
     setUpFloatingActionButton()
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
   }
 
   private fun setUpRecyclerView() {
-    with(recyclerViewTodos) {
+    with(findViewById(R.id.recyclerViewTodos)) {
       adapter = RecyclerListAdapter(mutableListOf(), onRecyclerItemClick())
       layoutManager = LinearLayoutManager(this@MainActivity)
       itemAnimator = DefaultItemAnimator()
@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
       todosLiveData.observe(this@MainActivity, Observer { todos ->
         // Observes changes in the LiveData
         todos?.let {
-          val adapter = (recyclerViewTodos.adapter as RecyclerListAdapter)
+          val adapter = (findViewById(R.id.recyclerViewTodos).adapter as RecyclerListAdapter)
           adapter.setItems(it)  // Updates list items when data changes (next step)
         }
       })
