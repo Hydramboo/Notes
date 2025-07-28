@@ -31,12 +31,6 @@ android {
         jvmTarget = "17"
     }
 
-    kapt {
-        javacOptions {
-            source = JavaVersion.VERSION_17
-            target = JavaVersion.VERSION_17
-        }
-    }
 }
 
 dependencies {
