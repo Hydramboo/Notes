@@ -22,6 +22,21 @@ android {
             proguardFiles("proguard-rules.pro")
         }
     }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
+    kapt {
+        javacOptions {
+            source = JavaVersion.VERSION_17
+            target = JavaVersion.VERSION_17
+        }
+    }
 }
 
 dependencies {
