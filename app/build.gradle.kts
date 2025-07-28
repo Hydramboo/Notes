@@ -7,8 +7,9 @@ plugins {
 
 android {
     compileSdk = 35
+    namespace = "com.petersommerhoff.kudoofinal"
     defaultConfig {
-        applicationId = "com.petersommerhoff.kudoofinal"
+        applicationId = "rj.todos"
         minSdk = 16
         targetSdk = 26
         versionCode = 1
