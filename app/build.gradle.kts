@@ -1,16 +1,16 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("kotlin-android-extensions")
+    //id("kotlin-android-extensions")
     id("kotlin-kapt")
 }
 
 android {
-    compileSdkVersion = 35
+    compileSdk = 35
     defaultConfig {
         applicationId = "com.petersommerhoff.kudoofinal"
-        minSdkVersion = 16
-        targetSdkVersion = 26
+        minSdk = 16
+        targetSdk = 26
         versionCode = 1
         versionName = "1.0.0"
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
