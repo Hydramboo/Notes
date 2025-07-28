@@ -1,19 +1,23 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id("com.android.application")
-    id("kotlin-android")
-    //id("kotlin-android-extensions")
-    id("kotlin-kapt")
+    kotlin("android")
+    id("com.google.devtools.ksp")
 }
 
 android {
-    compileSdk = 35
+    compileSdk = 36
     namespace = "com.petersommerhoff.kudoofinal"
     defaultConfig {
         applicationId = "rj.todos"
         minSdk = 16
-        targetSdk = 26
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0.0"
+
+        multiDexEnabled = true
+
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -27,33 +31,40 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.fromTarget("17"))
+        }
     }
 
 }
 
+configurations.all {
+    resolutionStrategy {
+        exclude(group = "com.google.android.material", module = "material")
+    }
+}
+
 dependencies {
-
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.1.21")
-    implementation("com.android.support:appcompat-v7:28.0.0")
-    implementation("com.android.support.constraint:constraint-layout:1.1.3")
-    implementation("com.android.support:design:28.0.0")
-
-    val room_version = "+"  // Adjust to newest version if you want to
-    implementation("android.arch.persistence.room:runtime:$room_version")
-    kapt("android.arch.persistence.room:compiler:$room_version")
-
-    val coroutines_version = "+"
+    implementation("androidx.multidex:multidex:2.0.1")
+    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("com.huanli233.materialcompat:material:1.12.0-alpha01")
+    val roomVersion = "2.6.0"  // Adjust to newest version if you want to
+    implementation("androidx.room:room-runtime:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
+    val coroutinesVersion = "+"
     // Use newest version if you want (might differ)
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version")
-
-    val lifecycle_version = "+"
-    implementation("android.arch.lifecycle:extensions:$lifecycle_version")
-    kapt("android.arch.lifecycle:compiler:$lifecycle_version")
-
+    //noinspection GradleDynamicVersion
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+    //noinspection GradleDynamicVersion
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
+    val lifecycleVersion = "2.6.2"
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion")
+    implementation("androidx.activity:activity-ktx:1.8.2")
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
     testImplementation("junit:junit:4.12")
-    androidTestImplementation("com.android.support.test:runner:1.0.2")
-    androidTestImplementation("com.android.support.test.espresso:espresso-core:3.0.2")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 }

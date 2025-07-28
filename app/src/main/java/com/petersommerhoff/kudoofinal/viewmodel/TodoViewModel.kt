@@ -1,8 +1,8 @@
 package com.petersommerhoff.kudoofinal.viewmodel
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
-import android.arch.lifecycle.LiveData
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import com.petersommerhoff.kudoofinal.db.AppDatabase
 import com.petersommerhoff.kudoofinal.db.DB
 import com.petersommerhoff.kudoofinal.db.dbScope
