@@ -20,10 +20,19 @@ android {
 
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        create("config") {
+            storeFile = project.rootProject.file("sign.jks")
+            storePassword = "android"
+            keyPassword = "android"
+            keyAlias = "key"
+        }
+    }
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles("proguard-rules.pro")
+            signingConfig = signingConfigs.getByName("config")
         }
     }
     compileOptions {
