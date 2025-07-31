@@ -3,7 +3,7 @@
     package="rj.notes">
 
     <application
-        android:name="androidx.multidex.MultiDexApplication"
+        android:name=".NotesApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -23,6 +23,15 @@
             android:name=".AddTodoActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AddTodoActivityTest"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ErrorDisplayActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask" />
     </application>
 
 </manifest>
