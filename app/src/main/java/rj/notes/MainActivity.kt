@@ -3,29 +3,15 @@ package rj.notes
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Button
+import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.huanli233.hikage.core.Hikage
-import com.huanli233.hikage.core.base.Hikageable
-import com.huanli233.hikage.core.builder.HikageBuilder
-import com.huanli233.hikage.core.runtime.collectAsHikageState
-import com.huanli233.hikage.core.runtime.mutableStateOf
-import com.huanli233.hikage.extension.lifecycleOwner
-import com.huanli233.hikage.extension.setContentView
-import com.huanli233.hikage.extension.widget.onClick
-import com.huanli233.hikage.extension.widget.onLongClick
-import com.huanli233.hikage.extension.widget.vertical
-import com.huanli233.hikage.core.LayoutParams
-import com.huanli233.hikage.widget.android.widget.LinearLayout
-import com.huanli233.hikage.widget.android.widget.TextView
-import com.huanli233.hikage.widget.androidx.constraintlayout.widget.ConstraintLayout
-import com.huanli233.hikage.widget.androidx.recyclerview.widget.RecyclerView
-import com.huanli233.hikage.widget.com.google.android.material.button.MaterialButton
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
-import rj.notes.db.AppDatabase
 import rj.notes.model.TodoItem
 import rj.notes.viewmodel.TodoViewModel
 
@@ -36,114 +22,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val viewModel: TodoViewModel by viewModels()
-    private val todosState = mutableStateOf<List<TodoItem>>(emptyList())
-    private val isEmptyState = mutableStateOf(true)
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var todoAdapter: TodoAdapter
+    private lateinit var btnAdd: Button
+    private lateinit var emptyStateView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
         try {
-            setContentView {
-                val todos = todosState.collectAsHikageState(lifecycleOwner)
-                val isEmpty = isEmptyState.collectAsHikageState(lifecycleOwner)
-                
-                ConstraintLayout(lparams = matchParent()) {
-                    // App Name in top left
-                    TextView(
-                        id = "tvAppName",
-                        lparams = wrapContent {
-                            marginStart = 8.dp
-                            marginTop = 8.dp
-                            constraintStartToStartOf = parentId
-                            constraintTopToTopOf = parentId
-                        }
-                    ) {
-                        text = getString(R.string.app_name)
-                        setTextColor(resources.getColor(R.color.white, null))
-                        textSize = 14.sp
-                        setTypeface(null, android.graphics.Typeface.BOLD)
-                    }
-
-                    // Add Button in top right
-                    MaterialButton(
-                        id = "btnAdd",
-                        lparams = LayoutParams(32.dp, 32.dp) {
-                            marginEnd = 8.dp
-                            marginTop = 8.dp
-                            constraintEndToEndOf = parentId
-                            constraintTopToTopOf = parentId
-                        }
-                    ) {
-                        text = "+"
-                        setTextColor(resources.getColor(R.color.white, null))
-                        textSize = 16.sp
-                        setTypeface(null, android.graphics.Typeface.BOLD)
-                        setBackgroundResource(R.drawable.add_button_background)
-                        onClick {
-                            try {
-                                val intent = Intent(this@MainActivity, AddTodoActivity::class.java)
-                                startActivity(intent)
-                            } catch (e: Exception) {
-                                Log.e(TAG, "Error starting AddTodoActivity: ${e.message}", e)
-                                ErrorUtils.showError(this@MainActivity, "页面跳转失败", "无法打开添加笔记页面", e)
-                            }
-                        }
-                        onLongClick {
-                            try {
-                                throw RuntimeException("测试错误：长按添加按钮")
-                            } catch (e: Exception) {
-                                Log.e(TAG, "Test error triggered: ${e.message}", e)
-                                ErrorUtils.showError(this@MainActivity, "测试错误", "这是一个测试错误", e)
-                            }
-                            true
-                        }
-                    }
-
-                    // Content area
-                    ConstraintLayout(
-                        lparams = LayoutParams(0.dp, 0.dp) {
-                            marginTop = 8.dp
-                            constraintBottomToBottomOf = parentId
-                            constraintEndToEndOf = parentId
-                            constraintStartToStartOf = parentId
-                            constraintTopToBottomOf = "tvAppName"
-                        }
-                    ) {
-                        RecyclerView(
-                            id = "recyclerViewTodos",
-                            lparams = matchParent {
-                                paddingTop = 4.dp
-                                paddingBottom = 4.dp
-                                constraintBottomToBottomOf = parentId
-                                constraintEndToEndOf = parentId
-                                constraintStartToStartOf = parentId
-                                constraintTopToTopOf = parentId
-                            }
-                        ) {
-                            // RecyclerView setup will be done in init block
-                        }
-
-                        TextView(
-                            id = "tvEmptyState",
-                            lparams = wrapContent {
-                                constraintBottomToBottomOf = parentId
-                                constraintEndToEndOf = parentId
-                                constraintStartToStartOf = parentId
-                                constraintTopToTopOf = parentId
-                            }
-                        ) {
-                            text = getString(R.string.no_todos_yet)
-                            setTextColor(resources.getColor(R.color.white, null))
-                            textSize = 12.sp
-                            gravity = android.view.Gravity.CENTER
-                            visibility = if (isEmpty.value) android.view.View.VISIBLE else android.view.View.GONE
-                        }
-                    }
-                }
-            }
-
+            setContentView(R.layout.activity_main)
+            setupViews()
             setupRecyclerView()
             observeTodos()
+            setupAddButton()
+            setupTestErrorButton()
             
         } catch (e: Exception) {
             Log.e(TAG, "Error in onCreate: ${e.message}", e)
@@ -151,39 +44,59 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupViews() {
+        try {
+            recyclerView = findViewById(R.id.recyclerViewTodos)
+            btnAdd = findViewById(R.id.btnAdd)
+            emptyStateView = findViewById(R.id.tvEmptyState)
+            Log.d(TAG, "Views found successfully")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error finding views: ${e.message}", e)
+            ErrorUtils.showError(this, "视图初始化失败", "无法找到必要的UI组件", e)
+        }
+    }
+
     private fun setupRecyclerView() {
         try {
-            val recyclerView = findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.recyclerViewTodos)
-            recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(this)
-            
-            val adapter = TodoAdapter { todoItem ->
+            todoAdapter = TodoAdapter { todoItem ->
                 try {
-                    // Handle item click
-                    Log.d(TAG, "Clicked on todo: ${todoItem.title}")
+                    // Handle todo item click - toggle completion
+                    viewModel.delete(todoItem)
                 } catch (e: Exception) {
-                    Log.e(TAG, "Error handling item click: ${e.message}", e)
-                    ErrorUtils.showError(this, "操作失败", "处理点击事件时发生错误", e)
+                    Log.e(TAG, "Error deleting todo: ${e.message}", e)
+                    ErrorUtils.showError(this, "删除失败", "删除笔记时发生错误", e)
                 }
             }
             
-            recyclerView.adapter = adapter
+            recyclerView.apply {
+                layoutManager = LinearLayoutManager(this@MainActivity)
+                adapter = todoAdapter
+            }
             Log.d(TAG, "RecyclerView setup completed")
         } catch (e: Exception) {
             Log.e(TAG, "Error setting up RecyclerView: ${e.message}", e)
-            ErrorUtils.showError(this, "列表设置失败", "设置笔记列表时发生错误", e)
+            ErrorUtils.showError(this, "列表初始化失败", "RecyclerView设置时发生错误", e)
         }
     }
 
     private fun observeTodos() {
         try {
-            viewModel.todos.observe(this) { todos ->
+            lifecycleScope.launch {
                 try {
-                    todosState.value = todos
-                    updateEmptyState(todos.isEmpty())
-                    Log.d(TAG, "Todos updated: ${todos.size} items")
+                    val todos = viewModel.getTodos()
+                    todos.observe(this@MainActivity) { todoList ->
+                        try {
+                            todoAdapter.submitList(todoList)
+                            updateEmptyState(todoList?.isEmpty() ?: true)
+                            Log.d(TAG, "Todos updated: ${todoList?.size ?: 0} items")
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Error updating todo list: ${e.message}", e)
+                            ErrorUtils.showError(this@MainActivity, "列表更新失败", "更新笔记列表时发生错误", e)
+                        }
+                    }
                 } catch (e: Exception) {
-                    Log.e(TAG, "Error updating todos: ${e.message}", e)
-                    ErrorUtils.showError(this, "数据更新失败", "更新笔记数据时发生错误", e)
+                    Log.e(TAG, "Error getting todos: ${e.message}", e)
+                    ErrorUtils.showError(this@MainActivity, "数据获取失败", "获取笔记数据时发生错误", e)
                 }
             }
         } catch (e: Exception) {
@@ -194,20 +107,59 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateEmptyState(isEmpty: Boolean) {
         try {
-            isEmptyState.value = isEmpty
-            val emptyStateView = findViewById<TextView>(R.id.tvEmptyState)
-            emptyStateView.visibility = if (isEmpty) android.view.View.VISIBLE else android.view.View.GONE
+            if (isEmpty) {
+                recyclerView.visibility = View.GONE
+                emptyStateView.visibility = View.VISIBLE
+            } else {
+                recyclerView.visibility = View.VISIBLE
+                emptyStateView.visibility = View.GONE
+            }
         } catch (e: Exception) {
             Log.e(TAG, "Error updating empty state: ${e.message}", e)
-            ErrorUtils.showError(this, "状态更新失败", "更新空状态时发生错误", e)
+            ErrorUtils.showError(this, "界面更新失败", "更新空状态显示时发生错误", e)
+        }
+    }
+
+    private fun setupAddButton() {
+        try {
+            btnAdd.setOnClickListener {
+                try {
+                    val intent = Intent(this, AddTodoActivity::class.java)
+                    startActivity(intent)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error starting AddTodoActivity: ${e.message}", e)
+                    ErrorUtils.showError(this, "页面跳转失败", "无法打开添加笔记页面", e)
+                }
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error setting up add button: ${e.message}", e)
+            ErrorUtils.showError(this, "按钮设置失败", "设置添加按钮时发生错误", e)
+        }
+    }
+
+    private fun setupTestErrorButton() {
+        try {
+            // 长按添加按钮可以测试错误显示功能
+            btnAdd.setOnLongClickListener {
+                try {
+                    // 故意抛出一个异常来测试错误显示
+                    throw RuntimeException("这是一个测试异常，用于测试错误显示功能")
+                } catch (e: Exception) {
+                    ErrorUtils.showError(this, "测试错误", "这是一个测试错误，用于验证错误显示功能是否正常工作", e)
+                }
+                true
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error setting up test error button: ${e.message}", e)
+            ErrorUtils.showError(this, "测试按钮设置失败", "设置测试错误按钮时发生错误", e)
         }
     }
 
     override fun onResume() {
         super.onResume()
         try {
-            // Refresh data when returning to the activity
-            viewModel.loadTodos()
+            // Refresh the list when returning from AddTodoActivity
+            observeTodos()
         } catch (e: Exception) {
             Log.e(TAG, "Error in onResume: ${e.message}", e)
             ErrorUtils.showError(this, "页面恢复失败", "页面恢复时发生错误", e)

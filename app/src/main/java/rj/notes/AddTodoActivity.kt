@@ -2,21 +2,12 @@ package rj.notes
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import com.huanli233.hikage.extension.lifecycleOwner
-import com.huanli233.hikage.extension.setContentView
-import com.huanli233.hikage.extension.widget.onClick
-import com.huanli233.hikage.extension.widget.textRes
-import com.huanli233.hikage.extension.widget.vertical
-import com.huanli233.hikage.widget.android.widget.LinearLayout
-import com.huanli233.hikage.widget.android.widget.TextView
-import com.huanli233.hikage.widget.com.google.android.material.button.MaterialButton
-import com.huanli233.hikage.widget.com.google.android.material.textfield.TextInputEditText
-import com.huanli233.hikage.widget.com.google.android.material.textfield.TextInputLayout
 import rj.notes.model.TodoItem
-import kotlinx.coroutines.launch
 import rj.notes.viewmodel.TodoViewModel
 
 class AddTodoActivity : AppCompatActivity() {
@@ -25,113 +16,75 @@ class AddTodoActivity : AppCompatActivity() {
         private const val TAG = "AddTodoActivity"
     }
 
-    private val viewModel: TodoViewModel by lazy { TodoViewModel(application) }
+    private val viewModel: TodoViewModel by viewModels()
+    private lateinit var editTextTodo: EditText
+    private lateinit var buttonAdd: Button
+    private lateinit var buttonCancel: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
         try {
-            setContentView {
-                var todoText = ""
-                
-                LinearLayout(
-                    lparams = matchParent(),
-                    init = {
-                        vertical()
-                        setPadding(24.dp)
-                        setBackgroundResource(R.color.background_color)
-                    }
-                ) {
-                    TextView(
-                        lparams = matchParent {
-                            marginBottom = 32.dp
-                        }
-                    ) {
-                        text = "添加新笔记"
-                        textSize = 24.sp
-                        setTypeface(null, android.graphics.Typeface.BOLD)
-                        setTextColor(resources.getColor(R.color.text_primary, null))
-                        gravity = android.view.Gravity.CENTER
-                    }
-
-                    TextInputLayout(
-                        lparams = matchParent {
-                            marginBottom = 24.dp
-                        }
-                    ) {
-                        TextInputEditText(
-                            lparams = matchParent()
-                        ) {
-                            hint = getString(R.string.enter_new_todo)
-                            inputType = android.text.InputType.TYPE_CLASS_TEXT or android.text.InputType.TYPE_TEXT_VARIATION_MULTI_LINE
-                            maxLines = 3
-                            minLines = 2
-                            setPadding(16.dp)
-                            setBackgroundResource(R.color.surface_color)
-                            setTextColor(resources.getColor(R.color.text_primary, null))
-                            textSize = 16.sp
-                            doOnTextChanged { text, _, _, _ ->
-                                todoText = text.toString()
-                            }
-                        }
-                    }
-
-                    MaterialButton(
-                        lparams = matchParent {
-                            marginBottom = 12.dp
-                        }
-                    ) {
-                        text = getString(R.string.add_to_do)
-                        textSize = 16.sp
-                        setPadding(16.dp)
-                        onClick {
-                            addTodo(todoText)
-                        }
-                    }
-
-                    MaterialButton(
-                        lparams = matchParent()
-                    ) {
-                        text = getString(R.string.cancel)
-                        textSize = 16.sp
-                        setPadding(16.dp)
-                        setBackgroundResource(android.R.color.transparent)
-                        onClick {
-                            finish()
-                        }
-                    }
-                }
-            }
+            setContentView(R.layout.activity_add_todo_simple)
+            Log.d(TAG, "Simple layout loaded successfully")
             
-            Log.d(TAG, "HikageCompat layout loaded successfully")
+            setupViews()
+            setupClickListeners()
             
+            // Set focus to edit text for better UX
+            editTextTodo.requestFocus()
+            Log.d(TAG, "Activity setup completed")
         } catch (e: Exception) {
             Log.e(TAG, "Error in onCreate: ${e.message}", e)
             ErrorUtils.showError(this, "初始化失败", "AddTodoActivity初始化时发生错误", e)
         }
     }
 
-    private fun addTodo(todoText: String) {
+    private fun setupViews() {
         try {
-            if (todoText.trim().isEmpty()) {
-                Toast.makeText(this, "请输入笔记内容", Toast.LENGTH_SHORT).show()
-                return
-            }
-
-            lifecycleScope.launch {
-                try {
-                    val todoItem = TodoItem(todoText.trim())
-                    viewModel.addTodo(todoItem)
-                    Toast.makeText(this@AddTodoActivity, "笔记添加成功", Toast.LENGTH_SHORT).show()
-                    finish()
-                } catch (e: Exception) {
-                    Log.e(TAG, "Error adding todo: ${e.message}", e)
-                    ErrorUtils.showError(this@AddTodoActivity, "添加失败", "添加笔记时发生错误", e)
-                }
-            }
+            editTextTodo = findViewById(R.id.etNewTodo)
+            buttonAdd = findViewById(R.id.btnAddTodo)
+            buttonCancel = findViewById(R.id.btnCancel)
+            Log.d(TAG, "Views found successfully")
         } catch (e: Exception) {
-            Log.e(TAG, "Error in addTodo: ${e.message}", e)
-            ErrorUtils.showError(this, "操作失败", "添加笔记操作时发生错误", e)
+            Log.e(TAG, "Error finding views: ${e.message}", e)
+            ErrorUtils.showError(this, "视图初始化失败", "无法找到必要的UI组件", e)
+        }
+    }
+
+    private fun setupClickListeners() {
+        buttonAdd.setOnClickListener {
+            try {
+                addTodo()
+            } catch (e: Exception) {
+                Log.e(TAG, "Error in addTodo: ${e.message}", e)
+                ErrorUtils.showError(this, "添加笔记失败", "添加笔记时发生错误", e)
+            }
+        }
+
+        buttonCancel.setOnClickListener {
+            finish()
+        }
+    }
+
+    private fun addTodo() {
+        val todoTitle = editTextTodo.text.toString().trim()
+        
+        if (todoTitle.isEmpty()) {
+            Toast.makeText(this, "请输入笔记内容", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        try {
+            val todoItem = TodoItem(todoTitle)
+            viewModel.add(todoItem)
+            
+            Toast.makeText(this, "笔记添加成功", Toast.LENGTH_SHORT).show()
+            Log.d(TAG, "Todo added successfully: $todoTitle")
+            finish()
+        } catch (e: Exception) {
+            Log.e(TAG, "Error adding todo: ${e.message}", e)
+            ErrorUtils.showError(this, "数据库操作失败", "保存笔记到数据库时发生错误", e)
         }
     }
 }
