@@ -123,8 +123,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         try {
             fab.setOnClickListener {
                 try {
-                    // 使用测试版本的Activity来避免闪退
-                    val intent = Intent(this, AddTodoActivityTest::class.java)
+                    // 使用正常的AddTodoActivity
+                    val intent = Intent(this, AddTodoActivity::class.java)
                     startActivity(intent)
                 } catch (e: Exception) {
                     Log.e(TAG, "Error starting AddTodoActivity: ${e.message}", e)

@@ -18,7 +18,7 @@ val DB = Executors.newSingleThreadExecutor().asCoroutineDispatcher()
 
 val dbScope = CoroutineScope(DB)
 
-@Database(entities = [TodoItem::class], version = 1)
+@Database(entities = [TodoItem::class], version = 2)
 abstract class AppDatabase : RoomDatabase() {
 
   companion object {
@@ -28,6 +28,7 @@ abstract class AppDatabase : RoomDatabase() {
       if (INSTANCE == null) {
         INSTANCE = Room.databaseBuilder(ctx, AppDatabase::class.java, "AppDatabase")
             .addCallback(prepopulateCallback(ctx))
+            .fallbackToDestructiveMigration() // 允许版本升级时重建数据库
             .build()
       }
 

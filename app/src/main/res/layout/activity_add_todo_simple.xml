@@ -3,29 +3,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="24dp"
+    android:background="@color/background_color">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="添加新笔记"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:gravity="center"
+        android:layout_marginBottom="32dp" />
 
     <EditText
         android:id="@+id/etNewTodo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/enter_new_todo"
-        android:layout_marginBottom="16dp"
-        android:inputType="text" />
+        android:inputType="textMultiLine"
+        android:maxLines="3"
+        android:minLines="2"
+        android:padding="16dp"
+        android:background="@color/surface_color"
+        android:textColor="@color/text_primary"
+        android:textSize="16sp"
+        android:layout_marginBottom="24dp" />
 
     <Button
         android:id="@+id/btnAddTodo"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/add_to_do"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="8dp" />
+        android:textSize="16sp"
+        android:padding="16dp"
+        android:layout_marginBottom="12dp" />
 
     <Button
         android:id="@+id/btnCancel"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/cancel"
-        android:layout_gravity="center_horizontal" />
+        android:textSize="16sp"
+        android:padding="16dp"
+        style="@android:style/Widget.Button.Borderless" />
 
 </LinearLayout>
