@@ -7,12 +7,12 @@ plugins {
 }
 
 android {
-    compileSdk = 34
     namespace = "rj.notes"
+    compileSdk = 36
     defaultConfig {
         applicationId = "rj.notes"
-        minSdk = 19
-        targetSdk = 34
+        minSdk = 21
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
@@ -62,9 +62,12 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("com.huanli233.materialcompat:material:1.12.0-alpha01")
     
-    // Note: HikageCompat dependencies are not available in public Maven repositories
-    // Using traditional XML layouts with clean code structure instead
-    // If you want to use HikageCompat, you need to provide the correct dependency information
+    // HikageCompat dependencies - basic modules only
+    implementation("com.highcapable.hikage:hikage-core:+")
+    implementation("com.highcapable.hikage:hikage-extension:+")
+    implementation("com.highcapable.hikage:hikage-widget-androidx:+")
+    implementation("com.highcapable.hikage:hikage-widget-material:+")
+    ksp("com.highcapable.hikage:hikage-compiler:+")
     
     val roomVersion = "2.6.0"  // Adjust to newest version if you want to
     implementation("androidx.room:room-runtime:$roomVersion")
