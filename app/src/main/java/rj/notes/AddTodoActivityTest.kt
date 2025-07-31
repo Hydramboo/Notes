@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import rj.notes.model.TodoItem
 import rj.notes.viewmodel.TodoViewModel
 
-class AddTodoActivityTest : AppCompatActivity() {
+class AddTodoActivityTest : Base() {
 
     private val viewModel: TodoViewModel by viewModels()
     private lateinit var editTextTodo: EditText
