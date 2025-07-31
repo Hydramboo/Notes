@@ -1,4 +1,4 @@
-package com.petersommerhoff.kudoofinal
+package rj.notes
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.petersommerhoff.kudoofinal.model.TodoItem
+import rj.notes.model.TodoItem
 
 class TodoAdapter(private val onItemClick: (TodoItem) -> Unit) : 
     ListAdapter<TodoItem, TodoAdapter.TodoViewHolder>(TodoDiffCallback()) {

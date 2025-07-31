@@ -1,4 +1,4 @@
-package com.petersommerhoff.kudoofinal
+package rj.notes
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,8 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.petersommerhoff.kudoofinal.model.TodoItem
-import com.petersommerhoff.kudoofinal.viewmodel.TodoViewModel
+import rj.notes.model.TodoItem
+import rj.notes.viewmodel.TodoViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -90,5 +90,3 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         observeTodos()
     }
 }
-
-

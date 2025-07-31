@@ -1,4 +1,4 @@
-package com.petersommerhoff.kudoofinal.db
+package rj.notes.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -6,7 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.Companion.IGNORE
 import androidx.room.Query
-import com.petersommerhoff.kudoofinal.model.TodoItem
+import rj.notes.model.TodoItem
 
 /**
  * @author Peter Sommerhoff
