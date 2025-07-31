@@ -69,7 +69,7 @@ class TodoAdapter(
         fun bind(todoItem: TodoItem) {
             try {
                 textView.text = todoItem.title
-                checkBox.isChecked = todoItem.isCompleted
+                checkBox.isChecked = false // 暂时设为false，因为TodoItem模型中没有isCompleted属性
                 
                 itemView.setOnClickListener {
                     try {

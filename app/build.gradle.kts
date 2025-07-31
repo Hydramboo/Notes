@@ -7,18 +7,18 @@ plugins {
 }
 
 android {
-    compileSdk = 36
+    compileSdk = 34
     namespace = "rj.notes"
     defaultConfig {
         applicationId = "rj.notes"
-        minSdk = 16
-        targetSdk = 36
+        minSdk = 19
+        targetSdk = 34
         versionCode = 1
-        versionName = "1.0.0"
+        versionName = "1.0"
 
         multiDexEnabled = true
 
-        testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
         create("config") {
