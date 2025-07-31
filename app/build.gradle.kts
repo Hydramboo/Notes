@@ -61,6 +61,14 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("com.huanli233.materialcompat:material:1.12.0-alpha01")
+    
+    // HikageCompat dependencies
+    implementation("com.huanli233.hikage:hikage-core:1.0.0")
+    implementation("com.huanli233.hikage:hikage-extension:1.0.0")
+    implementation("com.huanli233.hikage:hikage-widget-androidx:1.0.0")
+    implementation("com.huanli233.hikage:hikage-widget-material:1.0.0")
+    implementation("com.huanli233.hikage:hikage-recyclerview:1.0.0")
+    ksp("com.huanli233.hikage:hikage-compiler:1.0.0")
     val roomVersion = "2.6.0"  // Adjust to newest version if you want to
     implementation("androidx.room:room-runtime:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
