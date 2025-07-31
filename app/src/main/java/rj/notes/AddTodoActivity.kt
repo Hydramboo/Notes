@@ -10,7 +10,7 @@ import com.google.android.material.textfield.TextInputEditText
 import rj.notes.model.TodoItem
 import rj.notes.viewmodel.TodoViewModel
 
-class AddTodoActivity : AppCompatActivity() {
+class AddTodoActivity : Base() {
 
     private val viewModel: TodoViewModel by viewModels()
     private lateinit var editTextTodo: TextInputEditText
