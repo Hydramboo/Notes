@@ -8,9 +8,9 @@ plugins {
 
 android {
     compileSdk = 36
-    namespace = "com.petersommerhoff.kudoofinal"
+    namespace = "rj.notes"
     defaultConfig {
-        applicationId = "rj.todos"
+        applicationId = "rj.notes"
         minSdk = 16
         targetSdk = 36
         versionCode = 1

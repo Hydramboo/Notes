@@ -1,12 +1,12 @@
-package com.petersommerhoff.kudoofinal.viewmodel
+package rj.notes.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import com.petersommerhoff.kudoofinal.db.AppDatabase
-import com.petersommerhoff.kudoofinal.db.DB
-import com.petersommerhoff.kudoofinal.db.dbScope
-import com.petersommerhoff.kudoofinal.model.TodoItem
+import rj.notes.db.AppDatabase
+import rj.notes.db.DB
+import rj.notes.db.dbScope
+import rj.notes.model.TodoItem
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 

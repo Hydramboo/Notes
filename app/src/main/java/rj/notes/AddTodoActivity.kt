@@ -1,4 +1,4 @@
-package com.petersommerhoff.kudoofinal
+package rj.notes
 
 import android.os.Bundle
 import android.widget.Button
@@ -8,8 +8,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
-import com.petersommerhoff.kudoofinal.model.TodoItem
-import com.petersommerhoff.kudoofinal.viewmodel.TodoViewModel
+import rj.notes.model.TodoItem
+import rj.notes.viewmodel.TodoViewModel
 
 class AddTodoActivity : AppCompatActivity() {
 
@@ -42,14 +42,14 @@ class AddTodoActivity : AppCompatActivity() {
         val todoTitle = editTextTodo.text.toString().trim()
         
         if (todoTitle.isEmpty()) {
-            Toast.makeText(this, "Please enter a todo title", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "请输入笔记内容", Toast.LENGTH_SHORT).show()
             return
         }
 
         val todoItem = TodoItem(todoTitle)
         viewModel.add(todoItem)
         
-        Toast.makeText(this, "Todo added successfully", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "笔记添加成功", Toast.LENGTH_SHORT).show()
         finish()
     }
 }

@@ -1,11 +1,11 @@
-package com.petersommerhoff.kudoofinal.db
+package rj.notes.db
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.petersommerhoff.kudoofinal.model.TodoItem
+import rj.notes.model.TodoItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.launch
@@ -46,9 +46,9 @@ abstract class AppDatabase : RoomDatabase() {
     private fun populateWithSampleData(ctx: Context) {
       dbScope.launch {  // DB operations must be done on a background thread
         with(getDatabase(ctx).todoItemDao()) {
-          insertTodo(TodoItem("Create entity"))
-          insertTodo(TodoItem("Add a DAO for data access"))
-          insertTodo(TodoItem("Inherit from RoomDatabase"))
+          insertTodo(TodoItem("创建笔记"))
+          insertTodo(TodoItem("添加数据访问层"))
+          insertTodo(TodoItem("继承RoomDatabase"))
         }
       }
     }
