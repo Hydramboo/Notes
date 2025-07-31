@@ -1,5 +1,6 @@
 package rj.notes
 
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,9 @@ class TodoAdapter(private val onItemClick: (TodoItem) -> Unit) :
             TodoViewHolder(view, onItemClick)
         } catch (e: Exception) {
             Log.e(TAG, "Error creating ViewHolder: ${e.message}", e)
+            // 显示错误页面
+            val context = parent.context
+            ErrorUtils.showError(context, "列表项创建失败", "无法创建列表项视图", e)
             // 创建一个简单的备用视图
             val fallbackView = TextView(parent.context).apply {
                 text = "加载失败"
@@ -39,6 +43,9 @@ class TodoAdapter(private val onItemClick: (TodoItem) -> Unit) :
             holder.bind(getItem(position))
         } catch (e: Exception) {
             Log.e(TAG, "Error binding ViewHolder at position $position: ${e.message}", e)
+            // 显示错误页面
+            val context = holder.itemView.context
+            ErrorUtils.showError(context, "列表项绑定失败", "无法绑定列表项数据", e)
         }
     }
 
@@ -51,6 +58,9 @@ class TodoAdapter(private val onItemClick: (TodoItem) -> Unit) :
             itemView.findViewById(R.id.cbTodoDone)
         } catch (e: Exception) {
             Log.e(TAG, "Error finding CheckBox: ${e.message}", e)
+            // 显示错误页面
+            val context = itemView.context
+            ErrorUtils.showError(context, "组件查找失败", "无法找到CheckBox组件", e)
             null
         }
         
@@ -58,6 +68,9 @@ class TodoAdapter(private val onItemClick: (TodoItem) -> Unit) :
             itemView.findViewById(R.id.tvTodoTitle)
         } catch (e: Exception) {
             Log.e(TAG, "Error finding TextView: ${e.message}", e)
+            // 显示错误页面
+            val context = itemView.context
+            ErrorUtils.showError(context, "组件查找失败", "无法找到TextView组件", e)
             null
         }
         
@@ -76,6 +89,9 @@ class TodoAdapter(private val onItemClick: (TodoItem) -> Unit) :
                 checkBox?.isChecked = false // For now, we don't have completion status
             } catch (e: Exception) {
                 Log.e(TAG, "Error binding todo: ${e.message}", e)
+                // 显示错误页面
+                val context = itemView.context
+                ErrorUtils.showError(context, "数据绑定失败", "无法绑定笔记数据", e)
             }
         }
     }

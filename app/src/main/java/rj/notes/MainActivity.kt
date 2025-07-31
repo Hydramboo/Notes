@@ -64,8 +64,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     private fun setupRecyclerView() {
         try {
             todoAdapter = TodoAdapter { todoItem ->
-                // Handle todo item click - toggle completion
-                viewModel.delete(todoItem)
+                try {
+                    // Handle todo item click - toggle completion
+                    viewModel.delete(todoItem)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error deleting todo: ${e.message}", e)
+                    ErrorUtils.showError(this, "删除失败", "删除笔记时发生错误", e)
+                }
             }
             
             recyclerView.apply {
@@ -89,6 +94,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                         updateEmptyState(todoList?.isEmpty() ?: true)
                     } catch (e: Exception) {
                         Log.e(TAG, "Error updating todo list: ${e.message}", e)
+                        ErrorUtils.showError(this@MainActivity, "列表更新失败", "更新笔记列表时发生错误", e)
                     }
                 }
             } catch (e: Exception) {
@@ -109,18 +115,25 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             }
         } catch (e: Exception) {
             Log.e(TAG, "Error updating empty state: ${e.message}", e)
+            ErrorUtils.showError(this, "界面更新失败", "更新空状态显示时发生错误", e)
         }
     }
 
     private fun setupFab() {
         try {
             fab.setOnClickListener {
-                // 使用测试版本的Activity来避免闪退
-                val intent = Intent(this, AddTodoActivityTest::class.java)
-                startActivity(intent)
+                try {
+                    // 使用测试版本的Activity来避免闪退
+                    val intent = Intent(this, AddTodoActivityTest::class.java)
+                    startActivity(intent)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error starting AddTodoActivity: ${e.message}", e)
+                    ErrorUtils.showError(this, "页面跳转失败", "无法打开添加笔记页面", e)
+                }
             }
         } catch (e: Exception) {
             Log.e(TAG, "Error setting up FAB: ${e.message}", e)
+            ErrorUtils.showError(this, "按钮设置失败", "设置浮动按钮时发生错误", e)
         }
     }
 
@@ -138,6 +151,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             }
         } catch (e: Exception) {
             Log.e(TAG, "Error setting up test error button: ${e.message}", e)
+            ErrorUtils.showError(this, "测试按钮设置失败", "设置测试错误按钮时发生错误", e)
         }
     }
 
@@ -148,6 +162,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             observeTodos()
         } catch (e: Exception) {
             Log.e(TAG, "Error in onResume: ${e.message}", e)
+            ErrorUtils.showError(this, "页面恢复失败", "页面恢复时发生错误", e)
         }
     }
 }
