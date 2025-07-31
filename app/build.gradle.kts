@@ -62,8 +62,9 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("com.huanli233.materialcompat:material:1.12.0-alpha01")
     
-    // Note: HikageCompat dependencies removed as they are not available in Maven repositories
+    // Note: HikageCompat dependencies are not available in public Maven repositories
     // Using traditional XML layouts with clean code structure instead
+    // If you want to use HikageCompat, you need to build it locally or use a different repository
     val roomVersion = "2.6.0"  // Adjust to newest version if you want to
     implementation("androidx.room:room-runtime:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
