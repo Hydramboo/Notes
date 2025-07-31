@@ -4,11 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import rj.notes.model.TodoItem
 import rj.notes.viewmodel.TodoViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     val viewModel: TodoViewModel by viewModels()
     private lateinit var recyclerView: RecyclerView
     private lateinit var todoAdapter: TodoAdapter
-    private lateinit var fab: FloatingActionButton
+    private lateinit var btnAdd: Button
     private lateinit var emptyStateView: View
 
     val uiScope = CoroutineScope(coroutineContext + SupervisorJob())
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             setupViews()
             setupRecyclerView()
             observeTodos()
-            setupFab()
+            setupAddButton()
             setupTestErrorButton()
         } catch (e: Exception) {
             Log.e(TAG, "Error in onCreate: ${e.message}", e)
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     private fun setupViews() {
         try {
             recyclerView = findViewById(R.id.recyclerViewTodos)
-            fab = findViewById(R.id.fab)
+            btnAdd = findViewById(R.id.btnAdd)
             emptyStateView = findViewById(R.id.tvEmptyState)
             Log.d(TAG, "Views found successfully")
         } catch (e: Exception) {
@@ -119,9 +119,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
     }
 
-    private fun setupFab() {
+    private fun setupAddButton() {
         try {
-            fab.setOnClickListener {
+            btnAdd.setOnClickListener {
                 try {
                     // 使用正常的AddTodoActivity
                     val intent = Intent(this, AddTodoActivity::class.java)
@@ -132,15 +132,15 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 }
             }
         } catch (e: Exception) {
-            Log.e(TAG, "Error setting up FAB: ${e.message}", e)
-            ErrorUtils.showError(this, "按钮设置失败", "设置浮动按钮时发生错误", e)
+            Log.e(TAG, "Error setting up add button: ${e.message}", e)
+            ErrorUtils.showError(this, "按钮设置失败", "设置添加按钮时发生错误", e)
         }
     }
 
     private fun setupTestErrorButton() {
         try {
-            // 长按FAB可以测试错误显示功能
-            fab.setOnLongClickListener {
+            // 长按添加按钮可以测试错误显示功能
+            btnAdd.setOnLongClickListener {
                 try {
                     // 故意抛出一个异常来测试错误显示
                     throw RuntimeException("这是一个测试异常，用于测试错误显示功能")
