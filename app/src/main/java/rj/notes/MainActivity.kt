@@ -79,7 +79,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
     private fun setupFab() {
         fab.setOnClickListener {
-            val intent = Intent(this, AddTodoActivity::class.java)
+            // 使用测试版本的Activity来避免闪退
+            val intent = Intent(this, AddTodoActivityTest::class.java)
             startActivity(intent)
         }
     }

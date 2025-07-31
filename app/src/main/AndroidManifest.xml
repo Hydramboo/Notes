@@ -23,6 +23,10 @@
             android:name=".AddTodoActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AddTodoActivityTest"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
