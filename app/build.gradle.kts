@@ -59,6 +59,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("com.huanli233.materialcompat:material:1.12.0-alpha01")
     val roomVersion = "2.6.0"  // Adjust to newest version if you want to
     implementation("androidx.room:room-runtime:$roomVersion")

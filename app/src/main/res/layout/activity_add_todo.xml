@@ -1,27 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".view.add.AddTodoActivity">
+    android:background="@color/background_color"
+    android:padding="@dimen/padding_large"
+    tools:context=".AddTodoActivity">
 
-    <EditText
-        android:id="@+id/etNewTodo"
-        android:hint="@string/enter_new_todo"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilTodo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_medium"
-        android:textAppearance="@android:style/TextAppearance.Medium"
-        tools:text="@string/enter_new_todo"
-        android:inputType="text" />
+        android:layout_marginTop="@dimen/margin_large"
+        android:hint="@string/enter_new_todo"
+        app:boxBackgroundColor="@color/surface_color"
+        app:boxCornerRadiusBottomEnd="@dimen/corner_radius"
+        app:boxCornerRadiusBottomStart="@dimen/corner_radius"
+        app:boxCornerRadiusTopEnd="@dimen/corner_radius"
+        app:boxCornerRadiusTopStart="@dimen/corner_radius"
+        app:boxStrokeColor="@color/primary_color"
+        app:hintTextColor="@color/primary_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etNewTodo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="3"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/font_large" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAddTodo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_large"
+        android:padding="@dimen/padding_large"
+        android:text="@string/add_to_do"
+        android:textSize="@dimen/font_large"
+        app:backgroundTint="@color/primary_color"
+        app:cornerRadius="@dimen/corner_radius"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tilTodo" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCancel"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/add_to_do"
-        android:textAppearance="@android:style/TextAppearance"
-        android:layout_gravity="center_horizontal" />
+        android:layout_marginTop="@dimen/margin_medium"
+        android:text="@string/cancel"
+        android:textColor="@color/text_secondary"
+        android:textSize="@dimen/font_medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btnAddTodo" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
