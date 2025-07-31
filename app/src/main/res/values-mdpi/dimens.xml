@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 手表专用尺寸 -->
+    <dimen name="fab_margin">8dp</dimen>
+    <dimen name="margin_medium">8dp</dimen>
+    <dimen name="margin_large">12dp</dimen>
+    <dimen name="margin_small">4dp</dimen>
+    <dimen name="padding_medium">8dp</dimen>
+    <dimen name="padding_large">12dp</dimen>
+    <dimen name="font_large">12sp</dimen>
+    <dimen name="font_medium">10sp</dimen>
+    <dimen name="font_small">8sp</dimen>
+    <dimen name="corner_radius">4dp</dimen>
+    <dimen name="card_elevation">1dp</dimen>
+</resources>
