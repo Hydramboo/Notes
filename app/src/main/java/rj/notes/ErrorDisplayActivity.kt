@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import android.content.Intent
 
-class ErrorDisplayActivity : AppCompatActivity() {
+class ErrorDisplayActivity : Base() {
 
     companion object {
         const val EXTRA_ERROR_MESSAGE = "error_message"
