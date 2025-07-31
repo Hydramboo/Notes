@@ -35,8 +35,7 @@ class AddTodoActivityTest : AppCompatActivity() {
             Log.d(TAG, "Test activity setup completed")
         } catch (e: Exception) {
             Log.e(TAG, "Error in onCreate: ${e.message}", e)
-            Toast.makeText(this, "初始化失败: ${e.message}", Toast.LENGTH_LONG).show()
-            finish()
+            ErrorUtils.showError(this, "测试页面初始化失败", "AddTodoActivityTest初始化时发生错误", e)
         }
     }
 
@@ -48,7 +47,7 @@ class AddTodoActivityTest : AppCompatActivity() {
             Log.d(TAG, "Simple views found successfully")
         } catch (e: Exception) {
             Log.e(TAG, "Error finding views: ${e.message}", e)
-            throw e
+            ErrorUtils.showError(this, "视图初始化失败", "无法找到必要的UI组件", e)
         }
     }
 
@@ -58,7 +57,7 @@ class AddTodoActivityTest : AppCompatActivity() {
                 addTodo()
             } catch (e: Exception) {
                 Log.e(TAG, "Error in addTodo: ${e.message}", e)
-                Toast.makeText(this, "添加失败: ${e.message}", Toast.LENGTH_LONG).show()
+                ErrorUtils.showError(this, "添加笔记失败", "添加笔记时发生错误", e)
             }
         }
 
@@ -84,7 +83,7 @@ class AddTodoActivityTest : AppCompatActivity() {
             finish()
         } catch (e: Exception) {
             Log.e(TAG, "Error adding todo: ${e.message}", e)
-            Toast.makeText(this, "添加失败: ${e.message}", Toast.LENGTH_LONG).show()
+            ErrorUtils.showError(this, "数据库操作失败", "保存笔记到数据库时发生错误", e)
         }
     }
 }
