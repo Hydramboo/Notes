@@ -46,6 +46,6 @@
         android:text="@string/cancel"
         android:textSize="12sp"
         android:padding="12dp"
-        style="@android:style/Widget.Button.Borderless" />
+        android:background="?android:attr/selectableItemBackground" />
 
 </LinearLayout>

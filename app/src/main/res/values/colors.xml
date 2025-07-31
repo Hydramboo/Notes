@@ -20,4 +20,7 @@
     <color name="error_text">#D32F2F</color>
     <color name="stack_trace_background">#F5F5F5</color>
     <color name="stack_trace_text">#424242</color>
+    
+    <!-- Basic colors -->
+    <color name="black">#000000</color>
 </resources>
