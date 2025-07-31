@@ -81,22 +81,14 @@ class MainActivity : Base(), CoroutineScope {
     private fun setupFab() {
         fab.setOnClickListener {
             // 使用测试版本的Activity来避免闪退
-            val intent = Intent(this, AddTodoActivityTest::class.java)
+            val intent = Intent(this, AddTodoActivity::class.java)
             startActivity(intent)
         }
     }
 
     private fun setupTestErrorButton() {
         // 长按FAB可以测试错误显示功能
-        fab.setOnLongClickListener {
-            try {
-                // 故意抛出一个异常来测试错误显示
-                throw RuntimeException("这是一个测试异常，用于测试错误显示功能")
-            } catch (e: Exception) {
-                ErrorUtils.showError(this, "测试错误", "这是一个测试错误，用于验证错误显示功能是否正常工作", e)
-            }
-            true
-        }
+        // 没有这个功能因为我不想要
     }
 
     override fun onResume() {
