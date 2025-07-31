@@ -9,14 +9,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.highcapable.hikage.annotation.HikageView
-import com.highcapable.hikage.core.Hikage
-import com.highcapable.hikage.core.base.Hikageable
-import com.highcapable.hikage.core.builder.HikageBuilder
-import com.highcapable.hikage.extension.widget.onClick
-import com.highcapable.hikage.widget.android.widget.LinearLayout
-import com.highcapable.hikage.widget.android.widget.TextView
-import com.highcapable.hikage.widget.com.google.android.material.checkbox.MaterialCheckBox
 import rj.notes.model.TodoItem
 
 class TodoAdapter(
@@ -35,7 +27,6 @@ class TodoAdapter(
         } catch (e: Exception) {
             Log.e(TAG, "Error creating ViewHolder: ${e.message}", e)
             ErrorUtils.showError(parent.context, "列表项创建失败", "无法创建列表项视图", e)
-            // 创建一个简单的备用视图
             val fallbackView = TextView(parent.context).apply {
                 text = "加载失败"
                 setPadding(16, 16, 16, 16)
@@ -95,53 +86,13 @@ class TodoAdapter(
         }
     }
 
-    private class TodoDiffCallback : DiffUtil.ItemCallback<TodoItem>() {
+    class TodoDiffCallback : DiffUtil.ItemCallback<TodoItem>() {
         override fun areItemsTheSame(oldItem: TodoItem, newItem: TodoItem): Boolean {
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: TodoItem, newItem: TodoItem): Boolean {
             return oldItem == newItem
-        }
-    }
-}
-
-// HikageCompat TodoItem UI Builder
-object TodoItemUi : HikageBuilder {
-    override fun build(): Hikage.Delegate<*> = Hikageable {
-        LinearLayout(
-            lparams = matchParent(),
-            init = {
-                vertical()
-                setPadding(8.dp)
-                setBackgroundResource(R.color.surface_color)
-                setMargins(8.dp, 2.dp, 8.dp, 2.dp)
-            }
-        ) {
-            MaterialCheckBox(
-                id = "checkBoxTodo",
-                lparams = wrapContent {
-                    marginEnd = 8.dp
-                    gravity = android.view.Gravity.CENTER_VERTICAL
-                }
-            ) {
-                scaleX = 0.8f
-                scaleY = 0.8f
-            }
-
-            TextView(
-                id = "textViewTodo",
-                lparams = LayoutParams(0.dp, wrapContent) {
-                    weight = 1f
-                    gravity = android.view.Gravity.CENTER_VERTICAL
-                }
-            ) {
-                text = "示例笔记"
-                setTextColor(resources.getColor(R.color.text_primary, null))
-                textSize = 12.sp
-                maxLines = 3
-                ellipsize = android.text.TextUtils.TruncateAt.END
-            }
         }
     }
 }
