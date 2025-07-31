@@ -64,7 +64,7 @@ dependencies {
     
     // Note: HikageCompat dependencies are not available in public Maven repositories
     // Using traditional XML layouts with clean code structure instead
-    // If you want to use HikageCompat, you need to provide the correct repository or dependency information
+    // If you want to use HikageCompat, you need to provide the correct dependency information
     
     val roomVersion = "2.6.0"  // Adjust to newest version if you want to
     implementation("androidx.room:room-runtime:$roomVersion")
