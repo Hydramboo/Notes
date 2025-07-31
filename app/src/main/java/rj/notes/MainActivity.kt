@@ -16,7 +16,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-class MainActivity : AppCompatActivity(), CoroutineScope {
+class MainActivity : Base(), CoroutineScope {
 
     val viewModel: TodoViewModel by viewModels()
     private lateinit var recyclerView: RecyclerView
