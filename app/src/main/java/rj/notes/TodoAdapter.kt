@@ -1,5 +1,6 @@
 package rj.notes
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,14 +14,32 @@ import rj.notes.model.TodoItem
 class TodoAdapter(private val onItemClick: (TodoItem) -> Unit) : 
     ListAdapter<TodoItem, TodoAdapter.TodoViewHolder>(TodoDiffCallback()) {
 
+    companion object {
+        private const val TAG = "TodoAdapter"
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.todo_item, parent, false)
-        return TodoViewHolder(view, onItemClick)
+        return try {
+            val view = LayoutInflater.from(parent.context)
+                .inflate(R.layout.todo_item_simple, parent, false)
+            TodoViewHolder(view, onItemClick)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error creating ViewHolder: ${e.message}", e)
+            // 创建一个简单的备用视图
+            val fallbackView = TextView(parent.context).apply {
+                text = "加载失败"
+                setPadding(16, 16, 16, 16)
+            }
+            TodoViewHolder(fallbackView, onItemClick)
+        }
     }
 
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        try {
+            holder.bind(getItem(position))
+        } catch (e: Exception) {
+            Log.e(TAG, "Error binding ViewHolder at position $position: ${e.message}", e)
+        }
     }
 
     class TodoViewHolder(
@@ -28,8 +47,20 @@ class TodoAdapter(private val onItemClick: (TodoItem) -> Unit) :
         private val onItemClick: (TodoItem) -> Unit
     ) : RecyclerView.ViewHolder(itemView) {
         
-        private val checkBox: CheckBox = itemView.findViewById(R.id.cbTodoDone)
-        private val titleText: TextView = itemView.findViewById(R.id.tvTodoTitle)
+        private val checkBox: CheckBox? = try {
+            itemView.findViewById(R.id.cbTodoDone)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error finding CheckBox: ${e.message}", e)
+            null
+        }
+        
+        private val titleText: TextView? = try {
+            itemView.findViewById(R.id.tvTodoTitle)
+        } catch (e: Exception) {
+            Log.e(TAG, "Error finding TextView: ${e.message}", e)
+            null
+        }
+        
         private var currentTodo: TodoItem? = null
 
         init {
@@ -39,9 +70,13 @@ class TodoAdapter(private val onItemClick: (TodoItem) -> Unit) :
         }
 
         fun bind(todo: TodoItem) {
-            currentTodo = todo
-            titleText.text = todo.title
-            checkBox.isChecked = false // For now, we don't have completion status
+            try {
+                currentTodo = todo
+                titleText?.text = todo.title
+                checkBox?.isChecked = false // For now, we don't have completion status
+            } catch (e: Exception) {
+                Log.e(TAG, "Error binding todo: ${e.message}", e)
+            }
         }
     }
 
